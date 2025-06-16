@@ -1,0 +1,11 @@
+django
+djangorestframework
+Pillow
+django-allauth
+
+
+#for dummy data
+Faker
+
+
+##DONT FORGET TO DELETE THE DUMMY DATA OR CHANGE DB, ALSO DELETE THE MANAGEMENT, COMMANDS FOLDER 
