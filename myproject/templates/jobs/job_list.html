@@ -3,8 +3,9 @@
 {% block content %}
 {% include "jobs/nav_bar.html" %}
 
-<div class="container mt-4">
-  <h1>Job Listings</h1>
+<div class="job_list custom-job-description">
+  <div class="container mt-4">
+  <h1 class="d-flex justify-content-center">Job Listings</h1>
 
   {% if jobs %}
     <div class="row">
@@ -14,7 +15,13 @@
             <div class="card-body">
               <h5 class="card-title">{{ job.title }}</h5>
               <p class="card-text">{{ job.qualifications }}</p>
-              <a href="#" class="btn btn-primary">See more</a>
+               {% if user.is_authenticated %}
+        <a href="{% url 'job_details' job.id %}" class="btn btn-primary">See more</a>
+      {% else %}
+        <a href="{% url 'login' %}?next={% url 'job_details' job.id %}" class="btn btn-outline-secondary">
+          Login to view & apply
+        </a>
+      {% endif %}
             </div>
           </div>
         </div>
@@ -27,6 +34,8 @@
   {% else %}
     <p>No jobs found.</p>
   {% endif %}
+</div>
+
 
   <!-- Pagination controls -->
   <nav aria-label="Job pagination">

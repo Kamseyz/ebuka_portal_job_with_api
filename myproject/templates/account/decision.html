@@ -1,31 +1,45 @@
 {% extends "base/layout.html" %}
 {% load static %}
 {% block content %}
-  <div class="container py-5">
-    <h1 class="text-center mb-4">WHICH ONE ARE YOU??</h1>
-    
-    <div class="row row-cols-1 row-cols-md-2 g-2">
-      
-      <div class="col">
-        <div class="card shadow text-center p-3">
-          <img src="{% static 'images/Innovation-pana.png' %}" class="rounded-circle mx-auto d-block mt-3" width="150" height="150" alt="Job Seeker">
-          <div class="card-body">
-            <h5 class="card-title">ARE YOU LOOKING FOR A JOB?</h5>
-            <a href="{% url 'worker-register' %}" class="btn btn-outline-primary">Register as a job seeker</a>
-          </div>
-        </div>
-      </div>
 
-      <div class="col">
-        <div class="card shadow text-center p-3">
-          <img src="{% static 'images/Businessman-bro.png' %}" class="rounded-circle mx-auto d-block mt-3" width="150" height="150" alt="Employer">
-          <div class="card-body">
-            <h5 class="card-title">DO YOU WANT TO POST A JOB?</h5>
-            <a href="{% url 'employer-register' %}" class="btn btn-outline-success">Register as an employer</a>
-          </div>
-        </div>
-      </div>
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8">
 
+        <h2 class="text-center mb-5 fw-bold">Which one you be? 👀</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+
+          <!-- Job Seeker Card -->
+          <div class="col">
+            <div class="card h-100 shadow text-center p-3 border-primary border-2">
+              <img src="{% static 'images/Innovation-pana.png' %}" class="rounded-circle mx-auto mt-3" width="150" height="150" alt="Job Seeker">
+              <div class="card-body">
+                <h5 class="card-title">You dey find work?</h5>
+                <p class="card-text small">No worry, just register here and make we hook you up with remote jobs wey make sense.</p>
+                <a href="{% url 'worker-register' %}" class="btn btn-primary w-100">Register as Job Seeker</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Employer Card -->
+          <div class="col">
+            <div class="card h-100 shadow text-center p-3 border-success border-2">
+              <img src="{% static 'images/Businessman-bro.png' %}" class="rounded-circle mx-auto mt-3" width="150" height="150" alt="Employer">
+              <div class="card-body">
+                <h5 class="card-title">You dey find worker?</h5>
+                <p class="card-text small">Oya post your job here — sharp sharp, you go see people wey sabi!</p>
+                <a href="{% url 'employer-register' %}" class="btn btn-success w-100">Register as Employer</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
+</div>
+
 {% endblock %}

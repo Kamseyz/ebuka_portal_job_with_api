@@ -1,19 +1,21 @@
-{% extends "base/layout.html" %}
-{% load i18n %}
+{% extends "base/clean_layout.html" %}
+
 
 {% block content %}
-<div class="container mt-5">
-  <div class="card p-4 shadow-sm">
-    <h2 class="mb-3">{% trans "Confirm Email Address" %}</h2>
-    <p>
-      {% blocktrans with email_address=email_address %}
-        Please confirm that {{ email_address }} is your email address.
-      {% endblocktrans %}
-    </p>
-    <form method="post" action="">
-      {% csrf_token %}
-      <button class="btn btn-success" type="submit">{% trans "Confirm" %}</button>
-    </form>
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card p-5 shadow-lg" style="max-width: 600px; width: 100%;">
+    <div class="card-body text-center">
+      <h2 class="card-title mb-4 text-primary">{% trans "Confirm Your Email" %}</h2>
+      <p class="card-text mb-4">
+        {% blocktrans with email_address=email_address %}
+          Please confirm that <strong>{{ email_address }}</strong> is your email address.
+        {% endblocktrans %}
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-lg">{% trans "Confirm Email" %}</button>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

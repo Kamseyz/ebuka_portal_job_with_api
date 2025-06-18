@@ -1,0 +1,51 @@
+{% extends "base/layout.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 450px;">
+    <h4 class="text-center mb-4">Register as Worker</h4>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <!-- Email Field -->
+      <div class="mb-3">
+        {{ form.email|add_class:"form-control"|attr:"placeholder:Enter your email" }}
+        {% if form.email.errors %}
+          <div class="text-danger small">{{ form.email.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Password 1 -->
+      <div class="mb-3">
+        {{ form.password1|add_class:"form-control"|attr:"placeholder:Enter a password" }}
+        {% if form.password1.errors %}
+          <div class="text-danger small">{{ form.password1.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Password 2 -->
+      <div class="mb-3">
+        {{ form.password2|add_class:"form-control"|attr:"placeholder:Confirm your password" }}
+        {% if form.password2.errors %}
+          <div class="text-danger small">{{ form.password2.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Register Button -->
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+
+      <!-- Links -->
+      <div class="text-center">
+        <small>Don already get account? <a href="{% url 'login' %}">Login here</a></small>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

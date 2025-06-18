@@ -3,13 +3,13 @@
 {% load static %}
 <!-- NAV BAR -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
+  <div class="container">
     <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ms-auto d-flex gap-3 fs-4">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
@@ -23,17 +23,56 @@
     </div>
   </div>
 </nav>
-
 <!-- SEARCH  -->
  <div class="search">
    <nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
+  <div class="container-fluid justify-content-center ">
     <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+      <input class="form-control me-2 shadow-lg" type="search" placeholder="Search" aria-label="Search"/>
       <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
   </div>
 </nav>
  </div>
+
+ <!-- Hero section -->
+ <div class="container py-5">
+  <div class="row align-items-center gx-5">
+    <!-- 📝 Text Section -->
+    <div class="col-md-6 mb-4 mb-md-0">
+      <div class="p-3">
+        <h2 class="fw-bold mb-4 text-primary">Work dy hard you find? Wahala!</h2>
+        
+        <p class="fs-5 text-dark">
+          Na why I build this small site wey go help you dodge all the stress. No scam jobs, no yeye titles like
+          “Backend Ninja Supreme”. Just correct remote jobs from companies wey serious — and yes, you fit apply
+          while you dey chop indomie.
+        </p>
+
+        <p class="fs-5 text-dark">
+          And if na you dey find person wey go run work for your biz? No wahala. Just post am — sharp sharp you go
+          see person wey sabi. Everybody go collect. 😎
+        </p>
+
+      
+        <div class="mt-4">
+          <a href="{% url 'decision_page' %}" class="btn btn-success btn-lg mb-2">
+           I no get account,register from here
+          </a>
+          <br />
+          <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm mt-2">
+            I don already get account — Login
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🖼️ Image Section -->
+    <div class="col-md-6 text-center">
+      <img src="{% static 'images/undraw_co-working_becw.svg' %}" alt="co workers"
+        class="img-fluid rounded" style="max-height: 400px;" />
+    </div>
+  </div>
+</div>
 
 {% endblock %}

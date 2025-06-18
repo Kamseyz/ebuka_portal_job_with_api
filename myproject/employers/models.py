@@ -7,7 +7,7 @@ User = get_user_model()
 
 # Employee information model
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='employeedetails')
     company_name =models.CharField(blank= False, null= False, max_length=100)
     company_address =models.CharField(blank= False, null = False, max_length=250)
     company_phone_no =models.CharField(blank= False, null= False, max_length=20)

@@ -1,7 +1,7 @@
 from .forms import EmployeeRegistrationForm, WorkerRegistrationForm, LoginForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView,View
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,30 +12,30 @@ from allauth.account.utils import send_email_confirmation
 class EmployeeRegisterView(CreateView):
     form_class = EmployeeRegistrationForm
     template_name = 'account/registeremployeer.html'
-    success_url = reverse_lazy('after-login-check')
+    success_url = reverse_lazy('login')
     
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(commit=False)
         user.user_type = 'employer'
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        user.save()
         send_email_confirmation(self.request, user)
         messages.success(self.request, 'Employee account was created successfully')
-        return redirect('after-login-check')
+        return redirect('login')
     
 
 #WORKERS REGISTER VIEW
 class WorkerRegisterView(CreateView):
     form_class = WorkerRegistrationForm
     template_name = 'account/registerworkers.html'
-    success_url = reverse_lazy('after-login-check')
+    success_url = reverse_lazy('login')
     
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(commit=False)
         user.user_type = 'worker'
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        user.save()
         send_email_confirmation(self.request, user)
         messages.success(self.request, 'Account was created successfully')
-        return redirect('after-login-check')
+        return redirect('login')
     
 
 
@@ -59,31 +59,38 @@ class LogoutUser(LogoutView):
     
     
 #AFTER LOGIN CHECK THE USER 
-
-class AfterLoginCheck(LoginRequiredMixin, TemplateView):
-    login_url = reverse_lazy('login')
+class PostLoginRedirectView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        
-        if not user.is_authenticated:
-            return redirect('login')
-        
-        # check if the user have filled the required form
+
         if user.user_type == 'worker':
-            # Check if worker has completed profile
-            has_worker_details = hasattr(user, 'workerdetails')
-            return redirect('worker-dashboard' if has_worker_details else 'worker-complete-profile')
-        
+            if not hasattr(user, 'workerdetails'):
+                return redirect('worker_info')
+            return redirect('worker_dashboard')
+
         elif user.user_type == 'employer':
-            # Check if employer has completed profile
-            has_employee_details = hasattr(user, 'employee')
-            return redirect('employee-dashboard' if has_employee_details else 'employee-complete-profile')
-        
-        # If user_type doesn't match, redirect to login or show error
-        messages.error(request, 'Invalid user type')
-        return redirect('login')
-    
-    
-    
+            if not hasattr(user, 'employeedetails'):
+                return redirect('employee-info')
+            return redirect('employee-dashboard-view')
+
+        return redirect('home')
+
 class DecisionPage(TemplateView):
     template_name = 'account/decision.html'
+    
+    
+    
+#################testing mail###################
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+def test_email(request):
+    send_mail(
+        subject="Test Gmail SMTP",
+        message="If you're reading this, it worked!",
+        from_email=None,  # Uses DEFAULT_FROM_EMAIL
+        recipient_list=["youremail@gmail.com"],  # Replace with yours
+        fail_silently=False,
+    )
+    return HttpResponse("Gmail test email sent successfully!")

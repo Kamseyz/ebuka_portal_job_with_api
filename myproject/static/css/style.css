@@ -1,5 +1,9 @@
-.search{
-    text-align: center;
-    color: green;
+*{
+    padding: 0;
+    margin: 0;
+}
 
+
+#joblist{
+    text-align: center;
 }

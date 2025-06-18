@@ -9,7 +9,7 @@ class WorkerDetails(models.Model):
     class StatusChoice(models.TextChoices):
         AVAILABLE ='available', 'Available'
         EMPLOYED = 'employed', 'Employed'
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='workerdetails')
     name = models.CharField(max_length=100, blank= False, null= False)
     email = models.EmailField(max_length=100, blank= False, null=False)
     skills= models.CharField(max_length=100, blank= False, null= False)
