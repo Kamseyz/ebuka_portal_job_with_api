@@ -18,6 +18,7 @@ class Job(models.Model):
     status = models.CharField(max_length=20, choices=Choices.choices, default=Choices.AVAILABLE)
     responsibilities = models.TextField(max_length=300, null= False, blank= False, default="")
     qualifications = models.CharField(max_length=100, null= False, blank= False)
+    location = models.CharField(max_length=150, null=False, blank=False, default='')
     
     def __str__(self):
         return self.title

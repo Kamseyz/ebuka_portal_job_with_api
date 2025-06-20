@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from jobboard.models import Job
 
-# EMPLOYEE PROFILE CREATION
+#Create employee page first time
 class EmployeeView(LoginRequiredMixin, CreateView):
     form_class = EmployeeForm
     template_name = 'employee/employee_creation.html'
@@ -15,13 +15,11 @@ class EmployeeView(LoginRequiredMixin, CreateView):
     context_object_name = 'employee'
     success_url = reverse_lazy('employee-dashboard-view') 
     
-    # Check if profile already exists
     def dispatch(self, request, *args, **kwargs):
-        if hasattr(request.user, 'employee'):
+        if hasattr(request.user, 'employeedetails'):
             return redirect('employee-dashboard-view')
         return super().dispatch(request, *args, **kwargs)
-    
-    # Check form is valid
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         messages.success(self.request, 'Employer profile created successfully!')
@@ -33,10 +31,11 @@ class EmployeeDashboard(LoginRequiredMixin, TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['employee'] = self.request.user.employee
-        context['jobs'] = Job.objects.filter(posted_by=self.request.user.employee)
+        context['employee'] = self.request.user.employeedetails
+        context['jobs'] = Job.objects.filter(posted_by=self.request.user.employeedetails)
         context['total_jobs'] = context['jobs'].count()
         context['available_jobs'] = context['jobs'].filter(status='available').count()
+        context['status_choices'] = Job.Choices.choices 
         return context
 
 # SHOW EMPLOYEE DETAILS
@@ -46,13 +45,11 @@ class EmployeeDetails(LoginRequiredMixin, DetailView):
     context_object_name = 'employee'
     
     def get_object(self):
-        return self.request.user.employee
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['jobs'] = Job.objects.filter(posted_by=self.request.user.employee)
-        return context
-
+        try:
+            return self.request.user.employeedetails
+        except Employee.DoesNotExist:
+            messages.info(self.request, "Please complete your profile first.")
+            return redirect('employee-dashboard')
 # UPDATE EMPLOYEE FORM
 class UpdateEmployeeInfo(LoginRequiredMixin, UpdateView):
     form_class = EmployeeForm

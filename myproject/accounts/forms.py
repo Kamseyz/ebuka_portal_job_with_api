@@ -68,7 +68,7 @@ class EmployeeRegistrationForm(RegistrationForm):
 
 #LOGIN FORM
 class LoginForm(AuthenticationForm):
-    email = forms.EmailField(required= True, 
+    username = forms.EmailField(required= True, 
                              widget=forms.EmailInput(attrs={'placeholder': 'Enter email address', 'class':'form-control'}))
     password = forms.CharField(required= True, 
                              widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password', 'class':'form-control'}))

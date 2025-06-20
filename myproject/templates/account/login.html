@@ -16,7 +16,7 @@
 
       <!-- Email field -->
       <div class="mb-3">
-        {{ form.email|add_class:"form-control"|attr:"placeholder:Enter your email" }}
+        {{ form.username|add_class:"form-control"|attr:"placeholder:Enter your email" }}
         {% if form.email.errors %}
           <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
         {% endif %}

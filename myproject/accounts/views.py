@@ -1,5 +1,4 @@
 from .forms import EmployeeRegistrationForm, WorkerRegistrationForm, LoginForm
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView, TemplateView,View
 from django.urls import reverse_lazy
@@ -7,6 +6,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from allauth.account.utils import send_email_confirmation
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 #EMPLOYER REGISTER VIEW
 class EmployeeRegisterView(CreateView):
@@ -51,11 +53,14 @@ class LoginUser(LoginView):
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid credential, try again!')
         return super().form_invalid(form)
-        
+    
+
 
 #LOGOUT USER 
-class LogoutUser(LogoutView):
-    next_page = reverse_lazy('login')
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('view_jobs')
     
     
 #AFTER LOGIN CHECK THE USER 
@@ -70,7 +75,7 @@ class PostLoginRedirectView(LoginRequiredMixin, View):
 
         elif user.user_type == 'employer':
             if not hasattr(user, 'employeedetails'):
-                return redirect('employee-info')
+                return redirect('employee-dashboard')
             return redirect('employee-dashboard-view')
 
         return redirect('home')
@@ -79,18 +84,3 @@ class DecisionPage(TemplateView):
     template_name = 'account/decision.html'
     
     
-    
-#################testing mail###################
-
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
-def test_email(request):
-    send_mail(
-        subject="Test Gmail SMTP",
-        message="If you're reading this, it worked!",
-        from_email=None,  # Uses DEFAULT_FROM_EMAIL
-        recipient_list=["youremail@gmail.com"],  # Replace with yours
-        fail_silently=False,
-    )
-    return HttpResponse("Gmail test email sent successfully!")

@@ -1,0 +1,48 @@
+{% extends "base/layout.html" %}
+{% load static %}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 px-0">
+            <div class="sidebar">
+                <div class="p-4">
+                    <h4 class="text-white mb-4">
+                        <i class="fas fa-briefcase me-2"></i>JobPortal
+                    </h4>
+                    <div class="text-center mb-4">
+                        <div class="company-logo mx-auto mb-2">
+                            {{ user.first_name.0|upper }}{{ user.last_name.0|upper }}
+                        </div>
+                        <small class="text-white-50">{{ user.get_full_name }}</small>
+                    </div>
+                </div>
+                
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="{% url 'employee-dashboard-view' %}">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Dashboard
+                    </a>
+                    <a class="nav-link" href="{% url 'create_job' %}">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Add Job
+                    </a>
+                    <a class="nav-link disabled" href="#messages">
+                        <i class="fas fa-envelope me-2"></i>
+                        Messages
+                        <small class="ms-auto">(Soon)</small>
+                    </a>
+                    <a class="nav-link" href="#profile">
+                        <i class="fas fa-user me-2"></i>
+                        Edit profile
+                    </a>
+                    <hr class="mx-3 my-3" style="border-color: rgba(255,255,255,0.2);">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                        Logout
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+{% endblock %}

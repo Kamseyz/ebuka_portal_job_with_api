@@ -170,7 +170,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-LOGIN_REDIRECT_URL = '/post-login-check/'
+LOGIN_REDIRECT_URL = '/after-login-check/'
 
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/accounts/login/?confirmed=1'
 

@@ -1,0 +1,59 @@
+{% extends "base/layout.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+    <!-- Main Content: Job Form -->
+    <div class="col-md-9 col-lg-10 d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+      <div class="card p-4 shadow" style="width: 100%; max-width: 600px;">
+        <h4 class="text-center mb-4">Post a New Job</h4>
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          <div class="mb-3">
+            {{ form.title.label_tag }}
+            {{ form.title|add_class:"form-control" }}
+            {{ form.title.errors }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.responsibilities.label_tag }}
+            {{ form.responsibilities|add_class:"form-control" }}
+            {{ form.responsibilities.errors }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.status.label_tag }}
+            {{ form.status|add_class:"form-control" }}
+            {{ form.status.errors }}
+          </div>
+
+          <div class="mb-3">
+            {{ form.qualifications.label_tag }}
+            {{ form.qualifications|add_class:"form-control" }}
+            {{ form.qualifications.errors }}
+          </div>
+
+          <!-- Job location -->
+           <div class="mb-3">
+            {{ form.location.label_tag }}
+            {{ form.location|add_class:"form-control" }}
+            {{ form.location.errors }}
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Post Job</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
