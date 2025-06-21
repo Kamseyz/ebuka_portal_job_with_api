@@ -50,6 +50,8 @@ class EmployeeDetails(LoginRequiredMixin, DetailView):
         except Employee.DoesNotExist:
             messages.info(self.request, "Please complete your profile first.")
             return redirect('employee-dashboard')
+        
+
 # UPDATE EMPLOYEE FORM
 class UpdateEmployeeInfo(LoginRequiredMixin, UpdateView):
     form_class = EmployeeForm

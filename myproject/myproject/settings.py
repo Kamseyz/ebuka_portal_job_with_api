@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--f#6)-e%s_7=$_v3q7flt^kztgzb+gk_t5skdwq10ypz1pji$7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pain001.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -81,6 +81,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #context for allowing only workers to see download cv, upload cv
+                'workers.context_processors.is_worker_user',
             ],
         },
     },
@@ -181,3 +183,8 @@ ANYMAIL = {
 
 EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
 DEFAULT_FROM_EMAIL = "noreply@mazipain.name.ng"
+
+
+# DOWNLOAD CV PART
+MEDIA_URL = '/cv/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'cv') 

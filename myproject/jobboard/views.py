@@ -17,6 +17,25 @@ class ViewJobs(ListView):
     
     def get_queryset(self):
         return Job.objects.all().order_by('-created_at')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
+        is_worker = False
+        worker_pk = None
+
+        if user.is_authenticated:
+            try:
+                worker_profile = user.workerdetails
+                is_worker = True
+                worker_pk = worker_profile.pk
+            except:
+                pass
+
+        context['is_worker'] = is_worker
+        context['worker_pk'] = worker_pk
+        return context
 
 
     

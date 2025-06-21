@@ -9,19 +9,22 @@ from django.shortcuts import redirect
 
 
 #WEBSITE MODEL
-#TO CREATE PROFILE
-class Worker(LoginRequiredMixin,CreateView):
-    template_name = 'worker/worker_details.html'
+
+#TO CREATE PROFILE FOR WORKER AS A FIRST TIMER WHEN THEY LOGIN
+class WorkerCreationProfile(LoginRequiredMixin,CreateView):
+    template_name = 'workers/worker_creation.html'
     model = WorkerDetails
     form_class = WorkerForm
     context_object_name = 'workers'
-    success_url = reverse_lazy('workers/worker_dashboard')
+    success_url = reverse_lazy('view_jobs')
     
 #CHECK IF PROFILE ALREADY EXIST
     def dispatch(self, request, *args, **kwargs):
-        if hasattr(request.user ,'worker_details'):
-            return redirect(self.request, 'worker_dashboard')
+        if hasattr(request.user ,'workerdetails'):
+            return redirect('view_jobs')
         return super().dispatch(request, *args, **kwargs)
+    
+
 #Check if form is valid
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -29,6 +32,25 @@ class Worker(LoginRequiredMixin,CreateView):
         return super().form_valid(form)
     
     
+    
+# UPLOAD CV CODE
+from django.http import HttpResponseRedirect
+
+class UploadCVView(LoginRequiredMixin, UpdateView):
+    model = WorkerDetails
+    fields = ['upload_cv']
+    template_name = None  # We don't want to render any template
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(self.request.META.get('HTTP_REFERER', '/'))
+
+    def form_invalid(self, form):
+        return HttpResponseRedirect(self.request.META.get('HTTP_REFERER', '/'))
+
+    def get_queryset(self):
+        return WorkerDetails.objects.filter(user=self.request.user)
+
 
 #Read worker profile
 class WorkerProfile(LoginRequiredMixin,DetailView):
@@ -36,8 +58,7 @@ class WorkerProfile(LoginRequiredMixin,DetailView):
     context_object_name = 'workers'
     template_name = 'workers/worker_profile.html'
     
-    def get_object(self):
-        return self.request.profile
+
    
 
 #Update Worker profile

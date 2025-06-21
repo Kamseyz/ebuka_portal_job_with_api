@@ -70,8 +70,8 @@ class PostLoginRedirectView(LoginRequiredMixin, View):
 
         if user.user_type == 'worker':
             if not hasattr(user, 'workerdetails'):
-                return redirect('worker_info')
-            return redirect('worker_dashboard')
+                return redirect('worker_creation_profile')
+            return redirect('view_jobs')
 
         elif user.user_type == 'employer':
             if not hasattr(user, 'employeedetails'):

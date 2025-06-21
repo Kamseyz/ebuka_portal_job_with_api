@@ -1,48 +1,70 @@
 {% extends "base/layout.html" %}
-{% block content %}
 {% load static %}
-<!-- NAV BAR -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+{% block content %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">Mazi Worker finder</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+      aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav ms-auto d-flex gap-3 fs-4">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'decision_page' %}">Signup</a>
-        </li>
+      <ul class="navbar-nav ms-auto d-flex gap-3 fs-5">
+      {% if is_worker %}
+  <li class="nav-item">
+    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#uploadCVModal">Upload CV</a>
+  </li>
+
+  {% if request.user.workerdetails.upload_cv %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ request.user.workerdetails.upload_cv.url }}" download>Download CV</a>
+    </li>
+  {% endif %}
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+  </li>
+
+{% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'view_jobs' %}">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Login</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'decision_page' %}">Register</a>
+  </li>
+{% endif %}
       </ul>
     </div>
   </div>
 </nav>
-<!-- SEARCH  -->
- <div class="search">
-   <nav class="navbar bg-body-tertiary">
-  <div class="container-fluid justify-content-center ">
-    <form class="d-flex" role="search">
-      <input class="form-control me-2 shadow-lg" type="search" placeholder="Search" aria-label="Search"/>
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
- </div>
 
- <!-- Hero section -->
- <div class="container py-5">
+<!-- Search Section -->
+<div class="search">
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid justify-content-center">
+      <form class="d-flex" role="search">
+        <input class="form-control me-2 shadow-lg" type="search" placeholder="Search" aria-label="Search" />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+</div>
+
+<!-- Hero Section -->
+<div class="container py-5">
   <div class="row align-items-center gx-5">
-    <!-- 📝 Text Section -->
+    <!-- Text Section -->
     <div class="col-md-6 mb-4 mb-md-0">
       <div class="p-3">
         <h2 class="fw-bold mb-4 text-primary">Work dy hard you find? Wahala!</h2>
-        
+
         <p class="fs-5 text-dark">
           Na why I build this small site wey go help you dodge all the stress. No scam jobs, no yeye titles like
           “Backend Ninja Supreme”. Just correct remote jobs from companies wey serious — and yes, you fit apply
@@ -54,12 +76,10 @@
           see person wey sabi. Everybody go collect. 😎
         </p>
 
-      
         <div class="mt-4">
           <a href="{% url 'decision_page' %}" class="btn btn-success btn-lg mb-2">
-           I no get account,register from here
-          </a>
-          <br />
+            I no get account, register from here
+          </a><br />
           <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm mt-2">
             I don already get account — Login
           </a>
@@ -67,7 +87,7 @@
       </div>
     </div>
 
-    <!-- 🖼️ Image Section -->
+    <!-- Image Section -->
     <div class="col-md-6 text-center">
       <img src="{% static 'images/undraw_co-working_becw.svg' %}" alt="co workers"
         class="img-fluid rounded" style="max-height: 400px;" />
@@ -75,4 +95,36 @@
   </div>
 </div>
 
-{% endblock %}
+
+
+
+<!-- Upload CV Modal -->
+{% if request.user.is_authenticated and request.user.workerdetails %}
+  <!-- Upload CV Modal -->
+  <div class="modal fade" id="uploadCVModal" tabindex="-1" aria-labelledby="uploadCVModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{% url 'upload_cv' request.user.workerdetails.pk %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h5 class="modal-title" id="uploadCVModalLabel">Upload Your CV</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="cv-upload" class="form-label">Choose your CV</label>
+              <input class="form-control" type="file" id="cv-upload" name="upload_cv" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endif %}  
+
+{% endblock %}  
+
