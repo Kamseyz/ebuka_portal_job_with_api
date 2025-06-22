@@ -31,8 +31,6 @@ class RegistrationForm(UserCreationForm):
     #SAVE CLEAN EMAIL AND USER TYPE 
     def save(self, commit = True):
         user = super().save(commit = False) 
-        # user.email = self.cleaned_data['email']
-        # user.user_type = self.cleaned_data['user_type']
         if commit:
             user.save()
         return user
@@ -46,7 +44,6 @@ class WorkerRegistrationForm(RegistrationForm):
         
     def save(self, commit=True):
         user = super().save(commit = False)
-        # user.user_type = User.UserType.WORKER
         if commit:
             user.save()
         return user
@@ -60,7 +57,6 @@ class EmployeeRegistrationForm(RegistrationForm):
         
     def save(self, commit=True):
         user = super().save(commit = False)
-        # user.user_type = User.UserType.EMPLOYER
         if commit:
             user.save()
         return user

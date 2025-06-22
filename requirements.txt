@@ -2,7 +2,11 @@ django
 djangorestframework
 Pillow
 django-allauth
+python-decouple
 
+django-anymail
+
+django-widget-tweaks
 
 #for dummy data
 Faker

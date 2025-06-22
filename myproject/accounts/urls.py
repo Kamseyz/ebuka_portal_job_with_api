@@ -3,6 +3,7 @@ from django.urls import path
 
 
 urlpatterns = [
+    #Register worker url
     path('register/worker/', WorkerRegisterView.as_view(), name='worker-register'),
     path('register/employer/', EmployeeRegisterView.as_view(), name='employer-register'),
     path('login/', LoginUser.as_view(), name='login'),
