@@ -1,14 +1,14 @@
 from .forms import EmployeeRegistrationForm, WorkerRegistrationForm, LoginForm
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from django.views.generic import CreateView, TemplateView,View
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from allauth.account.utils import send_email_confirmation
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+
 
 #EMPLOYER REGISTER VIEW
 class EmployeeRegisterView(CreateView):
@@ -16,6 +16,7 @@ class EmployeeRegisterView(CreateView):
     template_name = 'account/registeremployeer.html'
     success_url = reverse_lazy('login')
     
+    # before saving the form its checks the user type and then save
     def form_valid(self, form):
         user = form.save(commit=False)
         user.user_type = 'employer'
@@ -23,6 +24,7 @@ class EmployeeRegisterView(CreateView):
         send_email_confirmation(self.request, user)
         messages.success(self.request, 'Employee account was created successfully')
         return redirect('login')
+    
     
 
 #WORKERS REGISTER VIEW
@@ -63,7 +65,7 @@ def logout_view(request):
     return redirect('view_jobs')
     
     
-#AFTER LOGIN CHECK THE USER 
+#AFTER LOGIN CHECK THE USERS(EITHER WORKER OR EMPLOYER IF THEY HAVE FILLED THE FORM)
 class PostLoginRedirectView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -79,7 +81,8 @@ class PostLoginRedirectView(LoginRequiredMixin, View):
             return redirect('employee-dashboard-view')
 
         return redirect('home')
-
+ 
+#BEFORE ANY USERS CAN REGISTER THEY WILL EITHER CHECK IF THEY WANT TO FILL AS AN EMPLOYER OR A WORKER
 class DecisionPage(TemplateView):
     template_name = 'account/decision.html'
     

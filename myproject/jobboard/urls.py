@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ViewJobs, DetailJobs, ApplicationView,PostJobs,EditJob,DeleteJob
+from .views import ViewJobs, DetailJobs, ApplicationView,PostJobs,EditJob,DeleteJob,ApplyJob
 
 urlpatterns = [
     #FRONT PAGE
@@ -13,7 +13,9 @@ urlpatterns = [
     # TO DELETE JOBS(EMPLOYER ONLY)
     path('delete_job/<int:pk>/', DeleteJob.as_view(), name='delete_job'),
     #TO VIEW APPLICATIONS(EMPLOYER ONLY)
-    path('job_applications/<int:pk>/', ApplicationView.as_view(), name='job_applications'),
+    path('job/<int:pk>/applications/', ApplicationView.as_view(), name='job_applications'),
+    # APPLY JOB(WORKER ONLY)
+    path('apply_job/<int:pk>', ApplyJob.as_view(), name='apply_job')
     
 
 ]

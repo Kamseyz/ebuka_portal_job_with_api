@@ -2,6 +2,7 @@ from django import forms
 from .models import Employee
 
 
+#EMPLOYER FORM AFTER THEY REGISTER AND LOGIN FOR THE FIRST TIME
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee

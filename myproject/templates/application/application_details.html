@@ -1,4 +1,32 @@
-{% extends "base/layout.html" %}
+{% extends 'base/layout.html' %}
+{% block title %}Applications for {{ job.title }}{% endblock %}
+
 {% block content %}
-  <h1>No fear i dea work</h1>
+<div class="container mt-4">
+  <h2>Applications for "{{ job.title }}"</h2>
+
+  {% if applications %}
+    <ul class="list-group">
+      {% for app in applications %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ app.applicate.user.get_full_name|default:app.applicate.user.email }}</strong>
+            <p class="mb-0 text-muted">Applied {{ app.date_applied|timesince }} ago</p>
+          </div>
+          <span class="badge 
+                       {% if app.status == 'accepted' %}bg-success
+                       {% elif app.status == 'rejected' %}bg-danger
+                       {% else %}bg-secondary
+                       {% endif %}">
+              {{ app.get_status_display }}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No applications yet.</p>
+  {% endif %}
+
+  <a href="{% url 'employee-dashboard-view' %}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
 {% endblock %}

@@ -3,6 +3,7 @@ from .models import Job
 
 
 
+#JOB CREATION FORM FOR EMPLOYER
 class JobCreationForm(forms.ModelForm):
     class Meta:
         model = Job

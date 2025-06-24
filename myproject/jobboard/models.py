@@ -4,7 +4,7 @@ from workers.models import WorkerDetails
 # Create your models here.
 
 
-#POV Later link to the employee model
+
 
 #Job model
 class Job(models.Model):

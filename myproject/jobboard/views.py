@@ -1,9 +1,11 @@
-from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView
+from django.views.generic import DetailView, ListView,CreateView,UpdateView,DeleteView,View
 from .models import Job,Application
 from django.urls import reverse_lazy
 from .forms import JobCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.shortcuts import redirect, get_object_or_404
+
 # Create your views here.
 
 #For website view
@@ -81,7 +83,49 @@ class DeleteJob(LoginRequiredMixin,DeleteView):
         return Job.objects.filter(posted_by = self.request.user.employeedetails)
     
     
+#TO GET MORE DETAILS OF THE JOB
+class DetailJobs(LoginRequiredMixin,DetailView):
+    model = Job
+    template_name = 'jobs/job_detail.html'
+    context_object_name = 'job'   
     
+
+#Apply for job(workers only)
+class ApplyJob(LoginRequiredMixin, View):  
+    def post(self, request, pk, *args, **kwargs):
+        job = get_object_or_404(Job, pk=pk)
+
+        # Check if user is a worker
+        if not hasattr(request.user, 'workerdetails'):
+            messages.error(request, "Only workers can apply for jobs.")
+            return redirect('job_details', pk=pk)
+
+        worker = request.user.workerdetails
+
+        # Check if already applied
+        if Application.objects.filter(applicate=worker, job=job).exists():
+            messages.info(request, "You have already applied for this job.")
+        else:
+            Application.objects.create(applicate=worker, job=job)
+            messages.success(request, "Application submitted successfully!")
+
+        return redirect('job_details', pk=pk)
+
+
+#SEE WHO APPLIED(WORKER)
+class ApplicationView(LoginRequiredMixin, DetailView):
+    model = Job
+    template_name = 'application/application_details.html'
+    context_object_name = 'jobs'
+    
+    def get_queryset(self):
+        return Job.objects.filter(posted_by = self.request.user.employeedetails)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        job = self.get_object()
+        context['applications'] = Application.objects.filter(job=job).select_related('applicate')
+        return context
     
 #TO UPDATE JOBS
 
@@ -89,10 +133,6 @@ class DeleteJob(LoginRequiredMixin,DeleteView):
 
 
 
-class DetailJobs(DetailView):
-    model = Job
-    template = 'jobs/job_details.html'
-    context_object_name = 'job'
     
  
  
@@ -103,11 +143,3 @@ class DetailJobs(DetailView):
 #FOR APPLICATION MODEL 
 #FOR WEB
 
-class ApplicationView(ListView):
-    model = Application
-    context_object_name = 'application_list'
-    template_name = 'application/application_details.html'
-    paginate_by = 5
-    
- 
- 

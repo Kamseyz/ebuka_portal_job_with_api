@@ -15,6 +15,7 @@ class EmployeeView(LoginRequiredMixin, CreateView):
     context_object_name = 'employee'
     success_url = reverse_lazy('employee-dashboard-view') 
     
+    #dispatch is not to check if the employer has already filled his/her form
     def dispatch(self, request, *args, **kwargs):
         if hasattr(request.user, 'employeedetails'):
             return redirect('employee-dashboard-view')
