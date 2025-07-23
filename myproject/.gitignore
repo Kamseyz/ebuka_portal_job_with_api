@@ -10,6 +10,7 @@ db.sqlite3
 venv/
 env/
 myevn/
+myevn
 
 # Django static & media
 /staticfiles/
