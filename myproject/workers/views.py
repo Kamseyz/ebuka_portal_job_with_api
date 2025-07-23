@@ -39,7 +39,7 @@ from django.http import HttpResponseRedirect
 class UploadCVView(LoginRequiredMixin, UpdateView):
     model = WorkerDetails
     fields = ['upload_cv']
-    template_name = None  # We don't want to render any template
+    template_name = None  
 
     def form_valid(self, form):
         form.save()
